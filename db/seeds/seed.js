@@ -1,5 +1,8 @@
 const db = require("../connection");
 const format = require("pg-format");
+const { formatTopics } = require("../utils/format-topics.utils");
+const { formatUsers } = require("../utils/format-users.utils");
+const { formatArticles } = require("../utils/format-articles.utils");
 
 const seed = async (data) => {
   const { articleData, commentData, topicData, userData } = data;
@@ -34,7 +37,30 @@ const seed = async (data) => {
 
   // 2. insert data
 
-  await db.query(`INSERT INTO users `);
+  // data processing for topics
+  const topicArray = formatTopics(topicData);
+  const topicSql = format(
+    `INSERT INTO topics (slug, description) VALUES %L RETURNING *;`,
+    topicArray
+  );
+  const topicInsert = await db.query(topicSql);
+
+  //data processing for users
+  const userArray = formatUsers(userData);
+  const userSql = format(
+    `INSERT INTO users (username, avatar_url, name) VALUES %L RETURNING *;`,
+    userArray
+  );
+  const userInsert = await db.query(userSql);
+
+  //data processing for articles
+  const articleArray = formatArticles(articleData);
+  const articleSql = format(
+    `INSERT INTO articles (title, body, votes, topic, author, created_at) VALUES %L RETURNING *;`,
+    articleArray
+  );
+  const articleInsert = await db.query(articleSql);
+  console.log(articleInsert.rows);
 };
 
 module.exports = seed;
