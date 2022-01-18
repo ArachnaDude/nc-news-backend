@@ -1,8 +1,9 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { formatTopics } = require("../utils/format-topics.utils");
-const { formatUsers } = require("../utils/format-users.utils");
+const { formatTopics } = require("../utils");
+//const { formatUsers } = require("../utils/format-users.utils");
 const { formatArticles } = require("../utils/format-articles.utils");
+const { formatComments } = require("../utils/format-comments.utils");
 
 const seed = async (data) => {
   const { articleData, commentData, topicData, userData } = data;
@@ -32,7 +33,10 @@ const seed = async (data) => {
   await db.query(`CREATE TABLE comments (
     comment_id SERIAL PRIMARY KEY,
     author TEXT REFERENCES users (username),
-    article_id INT REFERENCES articles (article_id)
+    article_id INT REFERENCES articles (article_id),
+    votes INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    body TEXT
   );`);
 
   // 2. insert data
@@ -59,8 +63,23 @@ const seed = async (data) => {
     `INSERT INTO articles (title, body, votes, topic, author, created_at) VALUES %L RETURNING *;`,
     articleArray
   );
-  const articleInsert = await db.query(articleSql);
-  console.log(articleInsert.rows);
+
+  const insertArticle = async () => {
+    const articleInsert = await db.query(articleSql);
+    return articleInsert;
+  };
+  insertArticle().then((result) => {
+    console.log(result.rows, "<<< THIS IS ACTUALLY IN THE DATABASE");
+  });
+
+  const commentArray = formatComments(commentData);
+  const commentSql = format(
+    `INSERT INTO comments (author, article_id, votes, created_at, body) VALUES %L RETURNING *;`,
+    commentArray
+  );
+  //console.log(commentArray);
+  const commentInsert = await db.query(commentSql);
+  //console.log(commentInsert.rows);
 };
 
 module.exports = seed;
