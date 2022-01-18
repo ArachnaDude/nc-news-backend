@@ -6,7 +6,7 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "test": "jest"
+    "test": "psql -f ./anything.sql > log.txt && jest"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "dependencies": {
     "dotenv": "^14.1.0",
+    "express": "^4.17.2",
     "pg": "^8.7.1",
     "pg-format": "^1.0.4"
   },
