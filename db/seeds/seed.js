@@ -1,9 +1,11 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { formatTopics } = require("../utils");
-//const { formatUsers } = require("../utils/format-users.utils");
-const { formatArticles } = require("../utils/format-articles.utils");
-const { formatComments } = require("../utils/format-comments.utils");
+const {
+  formatTopics,
+  formatUsers,
+  formatArticles,
+  formatComments,
+} = require("../utils");
 
 const seed = async (data) => {
   const { articleData, commentData, topicData, userData } = data;
@@ -44,42 +46,43 @@ const seed = async (data) => {
   // data processing for topics
   const topicArray = formatTopics(topicData);
   const topicSql = format(
-    `INSERT INTO topics (slug, description) VALUES %L RETURNING *;`,
+    `INSERT INTO topics (slug, description) VALUES %L;`,
     topicArray
   );
-  const topicInsert = await db.query(topicSql);
+  await db.query(topicSql).then((result) => {
+    return result.rows;
+  });
 
   //data processing for users
   const userArray = formatUsers(userData);
   const userSql = format(
-    `INSERT INTO users (username, avatar_url, name) VALUES %L RETURNING *;`,
+    `INSERT INTO users (username, avatar_url, name) VALUES %L;`,
     userArray
   );
-  const userInsert = await db.query(userSql);
+  await db.query(userSql).then((result) => {
+    return result.rows;
+  });
+
+  // as next tables reference topics and users, these have to complete first
 
   //data processing for articles
   const articleArray = formatArticles(articleData);
   const articleSql = format(
-    `INSERT INTO articles (title, body, votes, topic, author, created_at) VALUES %L RETURNING *;`,
+    `INSERT INTO articles (title, body, votes, topic, author, created_at) VALUES %L;`,
     articleArray
   );
-
-  const insertArticle = async () => {
-    const articleInsert = await db.query(articleSql);
-    return articleInsert;
-  };
-  insertArticle().then((result) => {
-    console.log(result.rows, "<<< THIS IS ACTUALLY IN THE DATABASE");
+  await db.query(articleSql).then((result) => {
+    return result.rows;
   });
 
   const commentArray = formatComments(commentData);
   const commentSql = format(
-    `INSERT INTO comments (author, article_id, votes, created_at, body) VALUES %L RETURNING *;`,
+    `INSERT INTO comments (author, article_id, votes, created_at, body) VALUES %L;`,
     commentArray
   );
-  //console.log(commentArray);
-  const commentInsert = await db.query(commentSql);
-  //console.log(commentInsert.rows);
+  await db.query(commentSql).then((result) => {
+    return result.rows;
+  });
 };
 
 module.exports = seed;
