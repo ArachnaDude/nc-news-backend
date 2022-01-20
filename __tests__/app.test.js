@@ -49,7 +49,7 @@ describe("GET /api/articles/:article_id", () => {
         });
       });
   });
-  test.only("status: 400, responds with error when passed a bad article id", () => {
+  test("status: 400, responds with error when passed a bad article id", () => {
     return request(app)
       .get("/api/articles/blorp")
       .expect(400)
@@ -57,7 +57,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(res.body.message).toBe("Bad request");
       });
   });
-  test.only("status: 404, responds with error when passed an unused valid article id", () => {
+  test("status: 404, responds with error when passed an unused valid article id", () => {
     return request(app)
       .get("/api/articles/99")
       .expect(404)
@@ -65,10 +65,21 @@ describe("GET /api/articles/:article_id", () => {
         expect(res.body.message).toBe("Article 99 not found");
       });
   });
+});
 
-  describe("PATCH /api/articles/:article_id", () => {
-    test("status 202", () => {
-      expect().toBe();
-    });
+describe("404 ERROR /invalid_url", () => {
+  test("status: 404, responds with message when passed an invalid URL", () => {
+    return request(app)
+      .get("/blorp")
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toEqual({ message: "URL not found" });
+      });
+  });
+});
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("status 202", () => {
+    expect().toBe();
   });
 });
