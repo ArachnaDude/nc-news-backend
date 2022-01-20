@@ -73,7 +73,7 @@ describe("404 ERROR /invalid_url", () => {
       .get("/blorp")
       .expect(404)
       .then((res) => {
-        expect(res.body).toEqual({ message: "URL not found" });
+        expect(res.body.message).toEqual("URL not found");
       });
   });
 });
