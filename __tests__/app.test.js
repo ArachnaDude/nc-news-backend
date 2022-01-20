@@ -62,7 +62,7 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/99")
       .expect(404)
       .then((res) => {
-        expect(res.body.message).toBe("You silly goose");
+        expect(res.body.message).toBe("Article 99 not found");
       });
   });
 

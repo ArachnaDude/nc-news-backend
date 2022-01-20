@@ -20,8 +20,8 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send("something went wrong");
+  console.log(err, "what we get back from model");
+  res.status(err.status).send({ message: err.message });
 });
 
 module.exports = app;
