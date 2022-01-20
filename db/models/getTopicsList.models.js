@@ -1,5 +1,8 @@
 const db = require("../connection");
 
 exports.getTopicsList = () => {
-  console.log("made it into the model");
+  console.log("getTopicsList model");
+  return db.query(`SELECT * FROM topics;`).then((result) => {
+    return result.rows;
+  });
 };

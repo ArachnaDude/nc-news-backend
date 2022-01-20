@@ -6,7 +6,8 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "test": "psql -f ./anything.sql > log.txt && jest"
+    "test": "psql -f ./anything.sql > log.txt && jest",
+    "practice": "psql -f ./SQL_practice.sql > sqlPractice.txt"
   },
   "repository": {
     "type": "git",
