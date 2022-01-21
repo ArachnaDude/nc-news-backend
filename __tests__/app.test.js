@@ -128,6 +128,15 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(res.body.message).toBe("Bad request");
       });
   });
+  test("status: 400, responds with bad request error when passed an invalid vote data type", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "a small, adorable duck" })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe("Bad request");
+      });
+  });
   test("status: 404, responds with not found error when passed a valid article id that is not in use", () => {
     return request(app)
       .patch("/api/articles/99")
