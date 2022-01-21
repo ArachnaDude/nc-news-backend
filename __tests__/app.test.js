@@ -79,7 +79,62 @@ describe("404 ERROR /invalid_url", () => {
 });
 
 describe("PATCH /api/articles/:article_id", () => {
-  test("status 202", () => {
-    expect().toBe();
+  test("status: 200, updates the votes column in articles table, and returns the updated article", () => {
+    return request(app)
+      .patch("/api/articles/5")
+      .send({ inc_votes: 10 })
+      .expect(200)
+      .then((res) => {
+        const updatedArticle = [
+          {
+            article_id: 5,
+            title: "UNCOVERED: catspiracy to bring down democracy",
+            body: "Bastet walks amongst us, and the cats are taking arms!",
+            votes: 10,
+            topic: "cats",
+            author: "rogersop",
+            created_at: "2020-08-03T13:14:00.000Z",
+          },
+        ];
+        expect(res.body).toEqual({ "Updated article": updatedArticle });
+      });
+  });
+  test("status: 200, updates the votes column in articles table, and returns the updated article", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -20 })
+      .expect(200)
+      .then((res) => {
+        const updatedArticle = [
+          {
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: "2020-07-09T20:11:00.000Z",
+            votes: 80,
+          },
+        ];
+        expect(res.body).toEqual({ "Updated article": updatedArticle });
+      });
+  });
+  test("status: 400, responds with a bad request error when passed a bad article_id", () => {
+    return request(app)
+      .patch("/api/articles/flurp")
+      .send({ inc_votes: 1 })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe("Bad request");
+      });
+  });
+  test("status: 404, responds with not found error when passed a valid article id that is not in use", () => {
+    return request(app)
+      .patch("/api/articles/99")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.message).toBe("Article 99 not found");
+      });
   });
 });
