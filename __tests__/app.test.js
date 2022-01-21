@@ -3,6 +3,8 @@ const request = require("supertest");
 const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../db/app.js");
+const endpoints = require("../endpoints.json");
+const e = require("express");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -78,6 +80,17 @@ describe("404 ERROR /invalid_url", () => {
   });
 });
 
+describe("GET /api", () => {
+  test("returns a list of available endpoints in a json object.", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toEqual(endpoints);
+      });
+  });
+});
+
 describe("PATCH /api/articles/:article_id", () => {
   test("status: 200, updates the votes column in articles table, and returns the updated article", () => {
     return request(app)
@@ -145,5 +158,10 @@ describe("PATCH /api/articles/:article_id", () => {
       .then((res) => {
         expect(res.body.message).toBe("Article 99 not found");
       });
+  });
+});
+describe("GET /api/articles", () => {
+  test("Status: 200, responds with an array of all articles. Accepts queries to change sort order.", () => {
+    return request(app).get("/api/articles");
   });
 });

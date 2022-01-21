@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const endpoints = require("../endpoints.json");
 const {
   sendWelcome,
   fetchTopicsList,
   fetchArticleById,
   patchArticleVotes,
+  getEndpoints,
 } = require("./controllers");
 const { handle404 } = require("../db/errors/errors");
 
@@ -13,9 +13,7 @@ const { handle404 } = require("../db/errors/errors");
 app.use(express.json());
 
 //sends back endpoints.json
-app.get("/api", (req, res, next) => {
-  res.send(endpoints);
-});
+app.get("/api", getEndpoints);
 
 //sends user a welcome to the api
 app.get("/api/welcome", sendWelcome);
