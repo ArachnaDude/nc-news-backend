@@ -24,6 +24,4 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
     });
 };
 
-// need to test for bad vote data type eg {inc_votes: "sklurp"}
-
 // can I test multiple votes without resetting?

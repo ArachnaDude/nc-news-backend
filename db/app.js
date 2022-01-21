@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const endpoints = require("../endpoints.json");
 const {
   sendWelcome,
   fetchTopicsList,
@@ -10,6 +11,11 @@ const { handle404 } = require("../db/errors/errors");
 
 //need this to parse a body. req.body doesn't exist without this!
 app.use(express.json());
+
+//sends back endpoints.json
+app.get("/api", (req, res, next) => {
+  res.send(endpoints);
+});
 
 //sends user a welcome to the api
 app.get("/api/welcome", sendWelcome);
