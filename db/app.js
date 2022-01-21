@@ -20,7 +20,13 @@ app.get("/api/topics", fetchTopicsList);
 //returns a particular topic
 app.get("/api/articles/:article_id", fetchArticleById);
 
+//accepts a body, and returns an article with an updated vote count
 app.patch("/api/articles/:article_id", patchArticleVotes);
+
+//returns a list of articles, and accepts queries
+app.get("/api/articles");
+
+//ERROR HANDLING
 
 //handles 404 errors for invalid paths for all request types
 app.all("*", handle404);
