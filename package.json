@@ -6,8 +6,9 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "test": "psql -f ./anything.sql > log.txt && jest",
-    "practice": "psql -f ./SQL_practice.sql > sqlPractice.txt"
+    "test": "jest",
+    "practice": "psql -f ./SQL_practice.sql > sqlPractice.txt",
+    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed"
   },
   "repository": {
     "type": "git",
