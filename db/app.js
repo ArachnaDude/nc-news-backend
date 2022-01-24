@@ -7,7 +7,11 @@ const {
   patchArticleVotes,
   getEndpoints,
 } = require("./controllers");
-const { handle404 } = require("../db/errors/errors");
+const {
+  handle404,
+  handlePsqlErrors,
+  handleCustomErrors,
+} = require("../db/errors/errors");
 
 //need this to parse a body. req.body doesn't exist without this!
 app.use(express.json());
@@ -36,16 +40,9 @@ app.get("/api/articles");
 app.all("*", handle404);
 
 // psql error handling
-app.use((err, req, res, next) => {
-  console.log("psql error handling");
-  if (err.code === "22P02") res.status(400).send({ message: "Bad request" });
-  else next(err);
-});
+app.use(handlePsqlErrors);
 
 //custom error handler
-app.use((err, req, res, next) => {
-  console.log(err, "what we get back from model");
-  res.status(err.status).send({ message: err.message });
-});
+app.use(handleCustomErrors);
 
 module.exports = app;

@@ -4,7 +4,6 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../db/app.js");
 const endpoints = require("../endpoints.json");
-const e = require("express");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
