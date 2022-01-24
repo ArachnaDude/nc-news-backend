@@ -159,8 +159,13 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
 });
-describe("GET /api/articles", () => {
+describe.only("GET /api/articles", () => {
   test("Status: 200, responds with an array of all articles. Accepts queries to change sort order.", () => {
-    return request(app).get("/api/articles");
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body, "result");
+      });
   });
 });

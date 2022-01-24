@@ -6,6 +6,7 @@ const {
   fetchArticleById,
   patchArticleVotes,
   getEndpoints,
+  getAllArticles,
 } = require("./controllers");
 const {
   handle404,
@@ -32,7 +33,7 @@ app.get("/api/articles/:article_id", fetchArticleById);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 
 //returns a list of articles, and accepts queries
-app.get("/api/articles");
+app.get("/api/articles", getAllArticles);
 
 //ERROR HANDLING
 

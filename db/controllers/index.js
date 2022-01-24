@@ -3,6 +3,7 @@ const { fetchTopicsList } = require("./fetchTopicsList.controllers");
 const { fetchArticleById } = require("./fetchArticleById.controllers");
 const { patchArticleVotes } = require("./patchArticleVotes.controllers");
 const { getEndpoints } = require("./getEndpoints.controllers");
+const { getAllArticles } = require("./getAllArticlesQueries.controllers");
 
 module.exports = {
   sendWelcome,
@@ -10,4 +11,5 @@ module.exports = {
   fetchArticleById,
   patchArticleVotes,
   getEndpoints,
+  getAllArticles,
 };
