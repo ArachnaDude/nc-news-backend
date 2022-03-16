@@ -165,7 +165,34 @@ describe.only("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then((result) => {
-        console.log(result.body.articles, "result");
+        expect(result.body.articles).toBeInstanceOf(Array);
+        expect(result.body.articles).toHaveLength(12);
+      });
+  });
+  test("200: articles are sorted by descending date by default", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body.articles);
+        expect(result.body.articles).toBeInstanceOf(Array);
+        expect(result.body.articles).toHaveLength(12);
+        expect(result.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("200: articles can be sorted by any valid column, descending by default", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body.articles);
+        expect(result.body.articles).toBeInstanceOf(Array);
+        expect(result.body.articles).toHaveLength(12);
+        expect(result.body.articles).toBeSortedBy("votes", {
+          descending: true,
+        });
       });
   });
 });
