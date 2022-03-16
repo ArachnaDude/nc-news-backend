@@ -43,6 +43,7 @@ describe("GET /api/articles/:article_id", () => {
             title: expect.any(String),
             article_id: expect.any(Number),
             body: expect.any(String),
+            topic: expect.any(String),
             created_at: expect.any(String),
             votes: expect.any(Number),
             comment_count: expect.any(String),
@@ -167,6 +168,17 @@ describe.only("GET /api/articles", () => {
       .then((result) => {
         expect(result.body.articles).toBeInstanceOf(Array);
         expect(result.body.articles).toHaveLength(12);
+        result.body.articles.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            comment_count: expect.any(String),
+          });
+        });
       });
   });
   test("200: articles are sorted by descending date by default", () => {
@@ -174,23 +186,28 @@ describe.only("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then((result) => {
-        console.log(result.body.articles);
-        expect(result.body.articles).toBeInstanceOf(Array);
-        expect(result.body.articles).toHaveLength(12);
         expect(result.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("200: articles can be sorted by a passed query, descending by default", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.articles).toBeSortedBy("votes", {
           descending: true,
         });
       });
   });
   test("200: articles can be sorted by any valid column, descending by default", () => {
     return request(app)
-      .get("/api/articles?sort_by=votes")
+      .get("/api/articles?sort_by=topic")
       .expect(200)
       .then((result) => {
-        console.log(result.body.articles);
-        expect(result.body.articles).toBeInstanceOf(Array);
-        expect(result.body.articles).toHaveLength(12);
-        expect(result.body.articles).toBeSortedBy("votes", {
+        console.log(result.body.articles, "sort_by topic");
+        expect(result.body.articles).toBeSortedBy("topic", {
           descending: true,
         });
       });
