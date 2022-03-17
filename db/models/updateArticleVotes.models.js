@@ -23,5 +23,3 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
       return result.rows;
     });
 };
-
-// can I test multiple votes without resetting?

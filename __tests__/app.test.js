@@ -4,6 +4,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../db/app.js");
 const endpoints = require("../endpoints.json");
+const { get } = require("express/lib/response");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -181,7 +182,7 @@ describe.only("GET /api/articles", () => {
         });
       });
   });
-  test("200: articles are sorted by descending date by default", () => {
+  test("Status: 200, articles are sorted by descending date by default", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -191,7 +192,7 @@ describe.only("GET /api/articles", () => {
         });
       });
   });
-  test("200: articles can be sorted by a passed query, descending by default", () => {
+  test("Status: 200, articles can be sorted by a passed query, descending by default", () => {
     return request(app)
       .get("/api/articles?sort_by=votes")
       .expect(200)
@@ -201,15 +202,48 @@ describe.only("GET /api/articles", () => {
         });
       });
   });
-  test("200: articles can be sorted by any valid column, descending by default", () => {
+  test("Status: 200, articles can be sorted by any valid column, descending by default", () => {
     return request(app)
       .get("/api/articles?sort_by=topic")
       .expect(200)
       .then((result) => {
-        console.log(result.body.articles, "sort_by topic");
         expect(result.body.articles).toBeSortedBy("topic", {
           descending: true,
         });
+      });
+  });
+  test("Status: 400, responds with an error if passed an invalid sort query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=flurpadurp")
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 200, while defaulting to descending, articles can be sorted ascending", () => {
+    return request(app)
+      .get("/api/articles?order=ASC")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.articles).toBeSortedBy("created_at");
+      });
+  });
+  test("Status: 200, ASC/DESC query ignores case", () => {
+    return request(app)
+      .get("/api/articles?order=DeSc")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("Status: 400, responds with error if ordered by anything other than ASC/DESC", () => {
+    return request(app)
+      .get("/api/articles?order=SIDEWAYS")
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
       });
   });
 });
