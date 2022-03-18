@@ -35,10 +35,13 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   queryString += `GROUP BY articles.article_id
   ORDER BY ${sort_by} ${order};`;
 
-  console.log(queryString, "queryString");
+  //console.log(queryString, "queryString");
 
   return db.query(queryString).then((articles) => {
-    console.log(articles.rows);
+    if (!articles.rows.length) {
+      console.log("you CAN ignore this length");
+      return Promise.reject({ status: 404, message: `${topic} not found` });
+    }
     return articles.rows;
   });
 

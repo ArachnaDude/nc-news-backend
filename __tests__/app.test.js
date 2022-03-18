@@ -5,6 +5,7 @@ const seed = require("../db/seeds/seed.js");
 const app = require("../db/app.js");
 const endpoints = require("../endpoints.json");
 const { get } = require("express/lib/response");
+const req = require("express/lib/request");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -262,6 +263,14 @@ describe.only("GET /api/articles", () => {
             created_at: expect.any(String),
           });
         });
+      });
+  });
+  test("Status: 404, responds with error if topic is not found", () => {
+    return request(app)
+      .get("/api/articles?topic=ricardoMontalban")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("ricardoMontalban not found");
       });
   });
 });
