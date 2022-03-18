@@ -246,4 +246,22 @@ describe.only("GET /api/articles", () => {
         expect(result.body.message).toBe("Bad request");
       });
   });
+  test("Status: 200, accepts topic as query, responds with articles that match specified topic", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.articles).toBeInstanceOf(Array);
+        expect(result.body.articles).toHaveLength(1);
+        result.body.articles.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: "cats",
+            created_at: expect.any(String),
+          });
+        });
+      });
+  });
 });

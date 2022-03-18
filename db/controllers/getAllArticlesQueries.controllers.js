@@ -3,10 +3,9 @@ const {
 } = require("../models/selectAllArticlesQueries.models");
 
 exports.getAllArticles = (req, res, next) => {
-  console.log(req.query, "req.query");
-  const { sort_by, order } = req.query;
-  console.log(sort_by, "< sort_by,", order, "< order");
-  selectAllArticles(sort_by, order)
+  const { sort_by, order, topic } = req.query;
+  console.log(sort_by, "< sort_by,", order, "< order", topic, "< topic");
+  selectAllArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
