@@ -1,3 +1,4 @@
+const format = require("pg-format");
 const db = require("../connection");
 
 exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
@@ -27,9 +28,12 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   `;
 
   if (topic) {
-    queryString += `
-    WHERE articles.topic ILIKE '${topic}'
-    `;
+    queryString += format(
+      `
+    WHERE articles.topic ILIKE %L
+    `,
+      topic
+    );
   }
 
   queryString += `GROUP BY articles.article_id

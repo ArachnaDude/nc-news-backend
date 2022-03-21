@@ -35,6 +35,9 @@ app.patch("/api/articles/:article_id", patchArticleVotes);
 //returns a list of articles, and accepts queries
 app.get("/api/articles", getAllArticles);
 
+//returns a list of comments for a given article id
+app.get("/api/articles/:article_id/comments");
+
 //ERROR HANDLING
 
 //handles 404 errors for invalid paths for all request types
