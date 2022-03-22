@@ -1,4 +1,5 @@
 const format = require("pg-format");
+const { query } = require("../connection");
 const db = require("../connection");
 
 exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
@@ -13,6 +14,8 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   ];
 
   const validOrder = ["ASC", "DESC"];
+
+  //const queryParams = [];
 
   if (
     !validSorts.includes(sort_by) ||
@@ -42,24 +45,20 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   //console.log(queryString, "queryString");
 
   return db.query(queryString).then((articles) => {
-    if (!articles.rows.length) {
-      console.log("you CAN ignore this length");
-      return Promise.reject({ status: 404, message: `${topic} not found` });
-    }
-    return articles.rows;
+    console.log(topic, articles.rows, articles.rows.length);
+    if (articles.rows.length) {
+      return articles.rows;
+    } else
+      return db
+        .query(`SELECT * FROM topics WHERE slug = $1`, [topic])
+        .then((result) => {
+          if (result.rows.length) {
+            return articles.rows;
+          } else
+            return Promise.reject({
+              status: 404,
+              message: `${topic} not found`,
+            });
+        });
   });
-
-  // original query
-
-  // return db
-  //   .query(
-  //     `SELECT articles.author, articles.title,
-  //   articles.article_id, articles.topic, articles.created_at,
-  //   articles.votes, COUNT(comment_id) AS comment_count FROM articles
-  //   LEFT JOIN comments ON comments.article_id = articles.article_id
-  //   GROUP BY articles.article_id ORDER BY ${sort_by} ${order};`
-  //   )
-  //   .then((articles) => {
-  //     return articles.rows;
-  //   });
 };

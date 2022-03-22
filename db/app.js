@@ -7,6 +7,7 @@ const {
   patchArticleVotes,
   getEndpoints,
   getAllArticles,
+  fetchCommentsByArticle,
 } = require("./controllers");
 const {
   handle404,
@@ -36,7 +37,7 @@ app.patch("/api/articles/:article_id", patchArticleVotes);
 app.get("/api/articles", getAllArticles);
 
 //returns a list of comments for a given article id
-app.get("/api/articles/:article_id/comments");
+app.get("/api/articles/:article_id/comments", fetchCommentsByArticle);
 
 //ERROR HANDLING
 

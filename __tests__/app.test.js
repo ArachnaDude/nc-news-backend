@@ -6,6 +6,7 @@ const app = require("../db/app.js");
 const endpoints = require("../endpoints.json");
 const { get } = require("express/lib/response");
 const req = require("express/lib/request");
+const { captureRejectionSymbol } = require("pg/lib/query");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -162,7 +163,7 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
 });
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("Status: 200, responds with an array of all articles.", () => {
     return request(app)
       .get("/api/articles")
@@ -265,12 +266,52 @@ describe.only("GET /api/articles", () => {
         });
       });
   });
-  test("Status: 404, responds with error if topic is not found", () => {
+  test.only("Status: 404, responds with error if topic is not found", () => {
     return request(app)
-      .get("/api/articles?topic=ricardoMontalban")
+      .get("/api/articles?topic=sofas")
       .expect(404)
       .then((result) => {
-        expect(result.body.message).toBe("ricardoMontalban not found");
+        console.log(result.body);
+        expect(result.body.message).toBe("sofas not found");
       });
   });
+  test.only("Status: 200, repsonds with empty array if valid topic with no articles", () => {
+    return request(app)
+      .get("/api/articles?topic=paper")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body, "res.body");
+        expect(result.body.articles).toEqual([]);
+      });
+  });
+});
+describe("/api/articles/:article_id/comments", () => {
+  test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comments).toBeInstanceOf(Array);
+        expect(result.body.comments).toHaveLength(11);
+        result.body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Status: 400, responds with bad request when passed invalid article id", () => {
+    return request(app)
+      .get("/api/articles/theBelgianDetective/comments")
+      .expect(400)
+      .then((result) => {
+        console.log(result.body);
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 200, responds with empty array when passed a valid article id with no comments associated with it", () => {});
 });

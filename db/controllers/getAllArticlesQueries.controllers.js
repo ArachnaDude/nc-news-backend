@@ -6,6 +6,7 @@ exports.getAllArticles = (req, res, next) => {
   const { sort_by, order, topic } = req.query;
   selectAllArticles(sort_by, order, topic)
     .then((articles) => {
+      console.log(articles, "controller articles");
       res.status(200).send({ articles });
     })
     .catch(next);
