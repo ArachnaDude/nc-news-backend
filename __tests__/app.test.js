@@ -4,9 +4,6 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../db/app.js");
 const endpoints = require("../endpoints.json");
-const { get } = require("express/lib/response");
-const req = require("express/lib/request");
-const { captureRejectionSymbol } = require("pg/lib/query");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -266,21 +263,19 @@ describe("GET /api/articles", () => {
         });
       });
   });
-  test.only("Status: 404, responds with error if topic is not found", () => {
+  test("Status: 404, responds with error if topic is not found", () => {
     return request(app)
       .get("/api/articles?topic=sofas")
       .expect(404)
       .then((result) => {
-        console.log(result.body);
         expect(result.body.message).toBe("sofas not found");
       });
   });
-  test.only("Status: 200, repsonds with empty array if valid topic with no articles", () => {
+  test("Status: 200, repsonds with empty array if valid topic with no articles", () => {
     return request(app)
       .get("/api/articles?topic=paper")
       .expect(200)
       .then((result) => {
-        console.log(result.body, "res.body");
         expect(result.body.articles).toEqual([]);
       });
   });
@@ -309,7 +304,6 @@ describe("/api/articles/:article_id/comments", () => {
       .get("/api/articles/theBelgianDetective/comments")
       .expect(400)
       .then((result) => {
-        console.log(result.body);
         expect(result.body.message).toBe("Bad request");
       });
   });
