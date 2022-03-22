@@ -280,7 +280,7 @@ describe("GET /api/articles", () => {
       });
   });
 });
-describe("/api/articles/:article_id/comments", () => {
+describe.only("/api/articles/:article_id/comments", () => {
   test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -307,5 +307,20 @@ describe("/api/articles/:article_id/comments", () => {
         expect(result.body.message).toBe("Bad request");
       });
   });
-  test("Status: 200, responds with empty array when passed a valid article id with no comments associated with it", () => {});
+  test("Status: 404, responds with article not found when passed a valid unused number", () => {
+    return request(app)
+      .get("/api/articles/999/comments")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("Article 999 not found");
+      });
+  });
+  test("Status: 200, responds with empty array when passed a valid article id with no comments associated with it", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comments).toEqual([]);
+      });
+  });
 });
