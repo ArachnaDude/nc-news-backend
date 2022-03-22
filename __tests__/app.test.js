@@ -280,7 +280,7 @@ describe("GET /api/articles", () => {
       });
   });
 });
-describe.only("/api/articles/:article_id/comments", () => {
+describe("/api/articles/:article_id/comments", () => {
   test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -321,6 +321,17 @@ describe.only("/api/articles/:article_id/comments", () => {
       .expect(200)
       .then((result) => {
         expect(result.body.comments).toEqual([]);
+      });
+  });
+});
+describe.only("POST /api/articles/:article_id/comments", () => {
+  test("Status: 201, responds with created comment object", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ username: "user", body: "test" })
+      .expect(201)
+      .then((result) => {
+        console.log(result.body);
       });
   });
 });

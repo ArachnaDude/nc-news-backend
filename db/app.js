@@ -8,6 +8,7 @@ const {
   getEndpoints,
   getAllArticles,
   fetchCommentsByArticle,
+  postComment,
 } = require("./controllers");
 const {
   handle404,
@@ -38,6 +39,9 @@ app.get("/api/articles", getAllArticles);
 
 //returns a list of comments for a given article id
 app.get("/api/articles/:article_id/comments", fetchCommentsByArticle);
+
+//accepts a username and body, and returns the posted comment
+app.post("/api/articles/:article_id/comments", postComment);
 
 //ERROR HANDLING
 

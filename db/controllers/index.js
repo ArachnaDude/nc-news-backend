@@ -7,6 +7,7 @@ const { getAllArticles } = require("./getAllArticlesQueries.controllers");
 const {
   fetchCommentsByArticle,
 } = require("./fetchCommentsByArticle.controllers");
+const { postComment } = require("./postComment.controllers");
 
 module.exports = {
   sendWelcome,
@@ -16,4 +17,5 @@ module.exports = {
   getEndpoints,
   getAllArticles,
   fetchCommentsByArticle,
+  postComment,
 };

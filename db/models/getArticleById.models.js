@@ -1,8 +1,6 @@
 const db = require("../connection");
 
 exports.getArticleById = (article_id) => {
-  console.log("getArticleById model");
-
   return db
     .query(
       `SELECT articles.*, COUNT(comment_id) AS comment_count 
