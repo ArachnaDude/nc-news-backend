@@ -45,7 +45,6 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   //console.log(queryString, "queryString");
 
   return db.query(queryString).then((articles) => {
-    console.log(topic, articles.rows, articles.rows.length);
     if (articles.rows.length) {
       return articles.rows;
     } else
