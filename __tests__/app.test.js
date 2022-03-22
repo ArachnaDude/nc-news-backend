@@ -324,14 +324,39 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 });
-describe("POST /api/articles/:article_id/comments", () => {
+describe.only("POST /api/articles/:article_id/comments", () => {
   test("Status: 201, responds with created comment object", () => {
     return request(app)
       .post("/api/articles/2/comments")
-      .send({ username: "user", body: "test" })
+      .send({ username: "lurker", body: "test" })
       .expect(201)
       .then((result) => {
-        console.log(result.body);
+        expect(result.body.postedComment).toMatchObject({
+          comment_id: expect.any(Number),
+          author: "lurker",
+          article_id: 2,
+          votes: 0,
+          created_at: expect.any(String),
+          body: "test",
+        });
+      });
+  });
+  test("Status: 400, responds with bad request when passed an invalid article id", () => {
+    return request(app)
+      .post("/api/articles/peanutbutter/comments")
+      .send({ username: "lurker", body: "this should be a 400" })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 404, responds with not found when passed an unused valid article id", () => {
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send({ username: "lurker", body: "this should be a 404" })
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("Not found");
       });
   });
 });
