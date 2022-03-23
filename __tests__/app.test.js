@@ -280,7 +280,7 @@ describe("GET /api/articles", () => {
       });
   });
 });
-describe("/api/articles/:article_id/comments", () => {
+describe("GET /api/articles/:article_id/comments", () => {
   test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -411,7 +411,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
-describe.only("DELETE /api/comments/:comment_id", () => {
+describe("DELETE /api/comments/:comment_id", () => {
   test("Status: 204, deletes comment by id", () => {
     return request(app)
       .delete("/api/comments/4")

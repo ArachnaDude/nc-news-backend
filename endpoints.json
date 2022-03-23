@@ -1,13 +1,16 @@
 {
   "GET /api": {
-    "description": "serves up a json representation of all the available endpoints of the api"
+    "description": "serves up a json representation of all the available endpoints of the api",
+    "status": 200
   },
   "GET /api/welcome": {
     "description": "welcomes user to the api",
+    "status": 200,
     "exampleResponse": { "message": "hello" }
   },
   "GET /api/topics": {
     "description": "serves an array of all topics",
+    "status": 200,
     "queries": [],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
@@ -15,6 +18,7 @@
   },
   "GET /api/articles/:article_id": {
     "description": "serves an array of the specific article, with a key for the number of comments, or a 404 if not found",
+    "status": 200,
     "queries": [],
     "exampleResponse": {
       "article": [
@@ -33,6 +37,7 @@
   },
   "PATCH /api/articles/:article_id": {
     "description": "accepts a body that modifies an article votes, then returns the modified article",
+    "status": 200,
     "queries": [],
     "exampleBody": { "inc_votes": 10 },
     "exampleResponse": {
@@ -51,6 +56,7 @@
   },
   "GET /api/articles": {
     "description": "serves an array of all articles",
+    "status": 200,
     "queries": ["topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
@@ -66,6 +72,7 @@
   },
   "GET /api/articles/:article_id/comments": {
     "description": "serves an array of all comments associated with an article",
+    "status": 200,
     "queries": [],
     "exampleResponse": {
       "comments": [
@@ -78,5 +85,23 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "allows user to post a comment",
+    "status": 201,
+    "exampleBody": { "username": "weegembump", "body": "Test comment" },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 99,
+        "votes": 0,
+        "created_at": 1527695953341,
+        "author": "weegembump",
+        "body": "Test comment"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes an individual comment",
+    "status": 204
   }
 }

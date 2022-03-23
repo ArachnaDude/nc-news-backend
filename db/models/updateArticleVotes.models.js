@@ -1,10 +1,6 @@
 const db = require("../connection");
 
 exports.updateArticleVotes = (article_id, inc_votes) => {
-  console.log("updateArticleVotes model");
-  console.log(article_id, "params");
-  console.log(inc_votes, "body");
-
   return db
     .query(
       `UPDATE articles 
