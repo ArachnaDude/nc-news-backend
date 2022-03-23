@@ -359,4 +359,55 @@ describe.only("POST /api/articles/:article_id/comments", () => {
         expect(result.body.message).toBe("Not found");
       });
   });
+  test("Status: 404, responds with not found when passed a username that doesn't exist", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ username: "big_steve", body: "this should be a 404 too" })
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("Not found");
+      });
+  });
+  test("Status: 400, responds with bad request when missing required body field", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ username: "lurker" })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 400, responds with bad request when missing required username field", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ body: "definitely a 400" })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 201, ignores extra properties", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({
+        username: "lurker",
+        nooseryame: "twerker",
+        braindrain: "bezerker",
+        body: "ignore everything but this",
+        buddy: "cop movie",
+        bobby: "davro",
+        bonnie: "tyler",
+      })
+      .expect(201)
+      .then((result) => {
+        expect(result.body.postedComment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: 0,
+          article_id: 2,
+          created_at: expect.any(String),
+          author: "lurker",
+          body: "ignore everything but this",
+        });
+      });
+  });
 });
