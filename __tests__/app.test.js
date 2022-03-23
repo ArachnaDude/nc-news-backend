@@ -324,7 +324,7 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 });
-describe.only("POST /api/articles/:article_id/comments", () => {
+describe("POST /api/articles/:article_id/comments", () => {
   test("Status: 201, responds with created comment object", () => {
     return request(app)
       .post("/api/articles/2/comments")
@@ -408,6 +408,36 @@ describe.only("POST /api/articles/:article_id/comments", () => {
           author: "lurker",
           body: "ignore everything but this",
         });
+      });
+  });
+});
+describe.only("DELETE /api/comments/:comment_id", () => {
+  test("Status: 204, deletes comment by id", () => {
+    return request(app)
+      .delete("/api/comments/4")
+      .expect(204)
+      .then(() => {
+        return db
+          .query(`SELECT * FROM comments WHERE comment_id = 4;`)
+          .then((result) => {
+            expect(result.rowCount).toBe(0);
+          });
+      });
+  });
+  test("Status: 400, responds with bad request when passed an invalid id", () => {
+    return request(app)
+      .delete("/api/comments/spookyScarySkeletons")
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 404, responds with not found when passed an unused valid id", () => {
+    return request(app)
+      .delete("/api/comments/99999")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("Comment not found");
       });
   });
 });

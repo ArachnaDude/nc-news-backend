@@ -9,6 +9,7 @@ const {
   getAllArticles,
   fetchCommentsByArticle,
   postComment,
+  removeComment,
 } = require("./controllers");
 const {
   handle404,
@@ -42,6 +43,8 @@ app.get("/api/articles/:article_id/comments", fetchCommentsByArticle);
 
 //accepts a username and body, and returns the posted comment
 app.post("/api/articles/:article_id/comments", postComment);
+
+app.delete("/api/comments/:comment_id", removeComment);
 
 //ERROR HANDLING
 
