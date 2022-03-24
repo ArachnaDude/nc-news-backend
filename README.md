@@ -8,7 +8,7 @@ This is a REST API backend service for "NC-News", a reddit-style content aggrega
 
 - Repo: https://github.com/ArachnaDude/nc-news-backend
 
-- Hosted version: TBC
+- Hosted version: https://matts-nc-news-backend.herokuapp.com/api
 
 ---
 
