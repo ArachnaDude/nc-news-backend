@@ -40,7 +40,8 @@ $ npm install
 
 ## Setting up Environment:
 
-In the project's root folder, set up the testing and development enviromnents using command:
+In a real world use case, the creation and setup of the .env files would be dealt with privately, as these can contain sensitive information.  
+For demonstration purposes, we can set up these locally using the following commands in the project's root folder:
 
 ```
 $ touch .env.test .env.development
