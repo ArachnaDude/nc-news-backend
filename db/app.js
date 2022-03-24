@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const {
@@ -16,6 +17,9 @@ const {
   handlePsqlErrors,
   handleCustomErrors,
 } = require("../db/errors/errors");
+
+//required to enable CORS for frontend use
+app.use(cors());
 
 //need this to parse a body. req.body doesn't exist without this!
 app.use(express.json());
