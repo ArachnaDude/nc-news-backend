@@ -41,7 +41,7 @@ $ npm install
 
 ## Setting up Environment:
 
-Create two files in the project's root folder for the testing and development enviromnents using command:
+In the project's root folder, set up the testing and development enviromnents using command:
 
 ```
 $ touch .env.test .env.development
