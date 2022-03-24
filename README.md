@@ -44,9 +44,9 @@ $ npm install
 Create two files in the project's root folder for the development enviromnents using command:
 
 ```
-touch .env.test .env.development
-echo PGDATABASE=nc_news_test > .env.test
-echo PGDATABASE=nc_news > .env.development
+$ touch .env.test .env.development
+$ echo PGDATABASE=nc_news_test > .env.test
+$ echo PGDATABASE=nc_news > .env.development
 ```
 
 ## Creating Tables and Seeding:
