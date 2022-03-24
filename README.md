@@ -45,9 +45,9 @@ Create two files in the project's root folder for the development enviromnents u
 
 ```
 touch .env.test .env.development
+echo PGDATABASE=nc_news_test > .env.test
+echo PGDATABASE=nc_news > .env.development
 ```
-
-Into each of these files, add `PGDATABASE=<database_name_here>`, substituting the bracketed value with `nc_news_test` and `nc_news` into `.env.test` and `.env.development` respectively.
 
 ## Creating Tables and Seeding:
 
