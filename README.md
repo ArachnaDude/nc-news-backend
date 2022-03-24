@@ -27,7 +27,6 @@ Input the following commands into your terminal's CLI:
 ```
 $ git clone https://github.com/ArachnaDude/nc-news-backend.git
 $ cd nc-news-backend
-$ code .
 ```
 
 ## Installing Dependencies:
