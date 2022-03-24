@@ -1,7 +1,7 @@
 {
-  "name": "be-nc-news",
+  "name": "nc-news-backend",
   "version": "1.0.0",
-  "description": "bc-nc-news",
+  "description": "A REST API for a news site",
   "main": "index.js",
   "scripts": {
     "start": "node ./db/listen.js",
