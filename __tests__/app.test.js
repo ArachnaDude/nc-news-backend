@@ -439,3 +439,24 @@ describe("DELETE /api/comments/:comment_id", () => {
       });
   });
 });
+describe("GET /api/users", () => {
+  test("Status: 200, responds with a list of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.users).toBeInstanceOf(Array);
+        expect(result.body.users).toHaveLength(4);
+        result.body.users.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            avatar_url: expect.any(String),
+            name: expect.any(String),
+          });
+        });
+      });
+  });
+});
+describe("GET /api/users/:username", () => {
+  test("Status: 200, responds with a single user object");
+});
