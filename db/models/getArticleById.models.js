@@ -18,6 +18,7 @@ exports.getArticleById = (article_id) => {
           message: `Article ${article_id} not found`,
         });
       }
-      return result.rows;
+      console.log(result.rows[0]);
+      return result.rows[0];
     });
 };
