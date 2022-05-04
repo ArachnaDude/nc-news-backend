@@ -11,6 +11,7 @@ const {
   fetchCommentsByArticle,
   postComment,
   removeComment,
+  fetchUserList,
 } = require("./controllers");
 const {
   handle404,
@@ -33,6 +34,12 @@ app.get("/api/welcome", sendWelcome);
 //returns a list of topics
 app.get("/api/topics", fetchTopicsList);
 
+//returns an array of user objects
+app.get("/api/users", fetchUserList);
+
+//returns a user object
+app.get("/api/users/:username");
+
 //returns a particular topic
 app.get("/api/articles/:article_id", fetchArticleById);
 
@@ -48,6 +55,7 @@ app.get("/api/articles/:article_id/comments", fetchCommentsByArticle);
 //accepts a username and body, and returns the posted comment
 app.post("/api/articles/:article_id/comments", postComment);
 
+//returns nothing - deletes comment by ID
 app.delete("/api/comments/:comment_id", removeComment);
 
 //ERROR HANDLING
