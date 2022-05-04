@@ -9,6 +9,7 @@ const {
 } = require("./fetchCommentsByArticle.controllers");
 const { postComment } = require("./postComment.controllers");
 const { removeComment } = require("./removeComment.controllers");
+const { fetchUserList } = require("./fetchUserList.controllers");
 
 module.exports = {
   sendWelcome,
@@ -20,4 +21,5 @@ module.exports = {
   fetchCommentsByArticle,
   postComment,
   removeComment,
+  fetchUserList,
 };
