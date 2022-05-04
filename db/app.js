@@ -12,6 +12,7 @@ const {
   postComment,
   removeComment,
   fetchUserList,
+  fetchSingleUser,
 } = require("./controllers");
 const {
   handle404,
@@ -37,8 +38,8 @@ app.get("/api/topics", fetchTopicsList);
 //returns an array of user objects
 app.get("/api/users", fetchUserList);
 
-//returns a user object
-app.get("/api/users/:username");
+//returns a single user object
+app.get("/api/users/:username", fetchSingleUser);
 
 //returns a particular topic
 app.get("/api/articles/:article_id", fetchArticleById);
