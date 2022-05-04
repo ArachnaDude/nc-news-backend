@@ -99,5 +99,14 @@
   "DELETE /api/comments/:comment_id": {
     "description": "deletes an individual comment",
     "status": 204
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users currently in the database",
+    "status": 200,
+    "exampleResponse": {
+      "users": [
+        { "username": "String", "name": "String", "avatar_url": "String" }
+      ]
+    }
   }
 }
