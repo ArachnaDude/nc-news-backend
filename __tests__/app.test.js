@@ -273,7 +273,7 @@ describe("GET /api/articles", () => {
       });
   });
 });
-describe.only("GET /api/articles/:article_id/comments", () => {
+describe("GET /api/articles/:article_id/comments", () => {
   test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -316,15 +316,50 @@ describe.only("GET /api/articles/:article_id/comments", () => {
         expect(result.body.comments).toEqual([]);
       });
   });
-  test("Status: 200, accepts query to sort by created_at/votes, descending by default", () => {
+  test("Status: 200, accepts query to sort by valid columns", () => {
     return request(app)
-      .get("/api/articles/3/comments?sort_by=created_at")
+      .get("/api/articles/3/comments?sort_by=votes")
       .expect(200)
       .then((result) => {
-        console.log(result.body.comments);
+        expect(result.body.comments).toBeSortedBy("votes", {
+          descending: true,
+        });
+      });
+  });
+  test("Status: 200, accepts query to change order of sort", () => {
+    return request(app)
+      .get("/api/articles/3/comments?order=ASC")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comments).toBeSortedBy("created_at", {
+          descending: false,
+        });
+      });
+  });
+  test("Status: 200, default behaviour is sort by=created_at&order=DESC", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then((result) => {
         expect(result.body.comments).toBeSortedBy("created_at", {
           descending: true,
         });
+      });
+  });
+  test("Status: 400, responds with bad request when passed invalid sort query", () => {
+    return request(app)
+      .get("/api/articles/3/comments?sort_by=fish")
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status:400, responds with bad request when passed invalid order query", () => {
+    return request(app)
+      .get("/api/articles/3/comments?order=66")
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
       });
   });
 });
