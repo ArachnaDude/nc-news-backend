@@ -18,7 +18,6 @@ describe("GET /api/welcome", () => {
       });
   });
 });
-
 describe("GET /api/topics", () => {
   test("status: 200, and replies with an array of topics", () => {
     return request(app)
@@ -30,7 +29,6 @@ describe("GET /api/topics", () => {
       });
   });
 });
-
 describe("GET /api/articles/:article_id", () => {
   test("status: 200, and replies with specificed article", () => {
     return request(app)
@@ -66,7 +64,6 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
-
 describe("404 ERROR /invalid_url", () => {
   test("status: 404, responds with message when passed an invalid URL", () => {
     return request(app)
@@ -77,7 +74,6 @@ describe("404 ERROR /invalid_url", () => {
       });
   });
 });
-
 describe("GET /api", () => {
   test("returns a list of available endpoints in a json object.", () => {
     return request(app)
@@ -88,7 +84,6 @@ describe("GET /api", () => {
       });
   });
 });
-
 describe("PATCH /api/articles/:article_id", () => {
   test("status: 200, updates the votes column in articles table, and returns the updated article", () => {
     return request(app)
@@ -477,6 +472,67 @@ describe("GET /api/users/:username", () => {
       .expect(404)
       .then((result) => {
         expect(result.body.message).toBe('user "tuvok_fan" not found');
+      });
+  });
+});
+describe("PATCH /api/comments/:comment_id", () => {
+  test("Status:200, updates the votes column in comments table, returning comment", () => {
+    return request(app)
+      .patch("/api/comments/5")
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comment).toMatchObject({
+          comment_id: 5,
+          body: expect.any(String),
+          article_id: 1,
+          author: expect.any(String),
+          votes: 1,
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("Status: 400, responds with error when passed invalid id", () => {
+    return request(app)
+      .patch("/api/comments/janeway")
+      .send({ inc_votes: 1 })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 400, responds with error when passed invalid vote type", () => {
+    return request(app)
+      .patch("/api/comments/5")
+      .send({ inc_votes: "prawn cocktail" })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.message).toBe("Bad request");
+      });
+  });
+  test("Status: 404, responds with error when passed non-existant valid id", () => {
+    return request(app)
+      .patch("/api/comments/0118999")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe("Comment 0118999 not found");
+      });
+  });
+  test("Status: 200, missing inc_votes key - has no effect", () => {
+    return request(app)
+      .patch("/api/comments/5")
+      .send({ vinc_oats: 1 })
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comment).toMatchObject({
+          comment_id: 5,
+          body: expect.any(String),
+          article_id: 1,
+          author: expect.any(String),
+          votes: 0,
+          created_at: expect.any(String),
+        });
       });
   });
 });
