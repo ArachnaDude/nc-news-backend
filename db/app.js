@@ -13,6 +13,7 @@ const {
   removeComment,
   fetchUserList,
   fetchSingleUser,
+  patchCommentVotes,
 } = require("./controllers");
 const {
   handle404,
@@ -46,6 +47,9 @@ app.get("/api/articles/:article_id", fetchArticleById);
 
 //accepts a body, and returns an article with an updated vote count
 app.patch("/api/articles/:article_id", patchArticleVotes);
+
+//accepts a body, and returns a comment with an updated vote count
+app.patch("/api/comments/:comment_id", patchCommentVotes);
 
 //returns a list of articles, and accepts queries
 app.get("/api/articles", getAllArticles);
