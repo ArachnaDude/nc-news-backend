@@ -266,7 +266,7 @@ describe("GET /api/articles", () => {
       .get("/api/articles?topic=sofas")
       .expect(404)
       .then((result) => {
-        expect(result.body.message).toBe("sofas not found");
+        expect(result.body.message).toBe('topic "sofas" not found');
       });
   });
   test("Status: 200, repsonds with empty array if valid topic with no articles", () => {
@@ -458,5 +458,25 @@ describe("GET /api/users", () => {
   });
 });
 describe("GET /api/users/:username", () => {
-  test("Status: 200, responds with a single user object");
+  test("Status: 200, responds with a single user object", () => {
+    return request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200)
+      .then((result) => {
+        expect(result.body.user).toMatchObject({
+          username: "butter_bridge",
+          name: "jonny",
+          avatar_url:
+            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+        });
+      });
+  });
+  test("Status: 404, responds with error when passed an non-existent username", () => {
+    return request(app)
+      .get("/api/users/tuvok_fan")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.message).toBe('user "tuvok_fan" not found');
+      });
+  });
 });
