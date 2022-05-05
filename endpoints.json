@@ -100,6 +100,20 @@
     "description": "deletes an individual comment",
     "status": 204
   },
+  "PATCH /api/comments/:comment_id": {
+    "description": "updates vote count on individual comment, returning updated comment",
+    "status": 200,
+    "exampleBody": { "inc_votes": 1 },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": "Number",
+        "votes": "Number",
+        "created_at": "String",
+        "author": "String",
+        "body": "String"
+      }
+    }
+  },
   "GET /api/users": {
     "description": "serves an array of all users currently in the database",
     "status": 200,
