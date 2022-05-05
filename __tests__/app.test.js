@@ -329,7 +329,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send({ username: "lurker", body: "test" })
       .expect(201)
       .then((result) => {
-        expect(result.body.postedComment).toMatchObject({
+        expect(result.body.comment).toMatchObject({
           comment_id: expect.any(Number),
           author: "lurker",
           article_id: 2,
@@ -398,7 +398,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       })
       .expect(201)
       .then((result) => {
-        expect(result.body.postedComment).toMatchObject({
+        expect(result.body.comment).toMatchObject({
           comment_id: expect.any(Number),
           votes: 0,
           article_id: 2,
