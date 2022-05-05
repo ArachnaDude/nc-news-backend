@@ -15,8 +15,6 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
 
   const validOrder = ["ASC", "DESC"];
 
-  //const queryParams = [];
-
   if (
     !validSorts.includes(sort_by) ||
     !validOrder.includes(order.toUpperCase())
@@ -42,8 +40,6 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   queryString += `GROUP BY articles.article_id
   ORDER BY ${sort_by} ${order};`;
 
-  //console.log(queryString, "queryString");
-
   return db.query(queryString).then((articles) => {
     if (articles.rows.length) {
       return articles.rows;
@@ -56,7 +52,7 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
           } else
             return Promise.reject({
               status: 404,
-              message: `${topic} not found`,
+              message: `topic "${topic}" not found`,
             });
         });
   });
