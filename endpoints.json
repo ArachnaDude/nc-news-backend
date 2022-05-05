@@ -69,7 +69,7 @@
   "GET /api/articles/:article_id/comments": {
     "description": "serves an array of all comments associated with an article",
     "status": 200,
-    "queries": [],
+    "queries": ["sort_by", "order"],
     "exampleResponse": {
       "comments": [
         {
