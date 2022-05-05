@@ -273,7 +273,7 @@ describe("GET /api/articles", () => {
       });
   });
 });
-describe("GET /api/articles/:article_id/comments", () => {
+describe.only("GET /api/articles/:article_id/comments", () => {
   test("Status: 200, responds with an array of comments with a corresponding article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -314,6 +314,17 @@ describe("GET /api/articles/:article_id/comments", () => {
       .expect(200)
       .then((result) => {
         expect(result.body.comments).toEqual([]);
+      });
+  });
+  test("Status: 200, accepts query to sort by created_at/votes, descending by default", () => {
+    return request(app)
+      .get("/api/articles/3/comments?sort_by=created_at")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body.comments);
+        expect(result.body.comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
       });
   });
 });
