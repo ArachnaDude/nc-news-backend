@@ -108,5 +108,12 @@
         { "username": "String", "name": "String", "avatar_url": "String" }
       ]
     }
+  },
+  "GET /api/users/:username": {
+    "description": "serves a single user",
+    "status": 200,
+    "exampleResponse": {
+      "user": { "username": "String", "name": "String", "avatar_url": "String" }
+    }
   }
 }
