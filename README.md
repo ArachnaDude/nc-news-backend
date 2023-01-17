@@ -10,7 +10,7 @@ This is a REST API backend service for "NC-News", a reddit-style content aggrega
 
 - Repo: https://github.com/ArachnaDude/nc-news-backend
 
-- Hosted version: https://matts-nc-news-backend.herokuapp.com/api
+- Hosted version: https://nc-news-backend-13fj.onrender.com/api
 
 ### Frontend:
 
