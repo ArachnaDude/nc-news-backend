@@ -2,9 +2,9 @@
   "name": "nc-news-backend",
   "version": "1.0.0",
   "description": "A REST API for a news site",
-  "main": "./db/listen.js",
+  "main": "listen.js",
   "scripts": {
-    "start": "node ./db/listen.js",
+    "start": "node listen.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
